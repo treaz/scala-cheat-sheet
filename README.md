@@ -5,3 +5,6 @@
 
 ## Sbt
 [Sbt cheat sheet](cheat-sheet-sbt.md)
+
+## Scala with Spark
+[Scala with Spark cheat sheet](cheat-sheet-scala-spark.md)
