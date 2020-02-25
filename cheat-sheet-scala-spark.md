@@ -36,6 +36,8 @@ xs.saveAsTextFile(path)             // Write the  elements of  the  dataset as  
 xs.saveAsSequenceFile(path)         // Write the  elements of  the  dataset as  a  Hadoop  Se­quenceFile in the local filesystem or HDFS
 ```
 
+Note: When you have a reduction operation in which yuo want to change the return type, the only action that allows you to do this is aggregate. 
+
 ## Caching and persistence
 xs.cache                    // Cache the RDD in memory, do not recompute. Useful if you need to reuse the dataset
 
@@ -52,10 +54,21 @@ xs substract ys     // Return an  RDD  with the contents of  the other RDD remov
 xs cartesian ys     // Cartesian product with the  other RDD
 ```
 
-## Common transformations on RDDs of (key, value) pairs (= PairRDDFunctions)
+## Common transformations on pair RDDs ((key, value) pairs)
+```
+val xs = RDD((kx1, vx1), (kx2, vx2), (kx3, vx3), ...)
+val ys = RDD((ky1, vy1), (ky2, vy2), (ky3, vy3), ...)
+xs.groupByKey           // Group the values for each key in the RDD into a single sequence
+xs reduceByKey f        // Merge the values for each key using an associative and commutative reduce function
+xs mapValues f          // Pass each value in the key-value pair RDD through a map function without changing the keys
+xs.keys                 // returns an RDD[String] containing the keys of xs 
+xs.join(ys)             // joins the RDDs based on their keys and keeps only the records which exist in both RDDs (k, (vx, vy))
+xs.leftOuterJoin(ys)    // joins the RDDs keeping the keys that are in xs (k, (vx, Optional[vy]))
+xs.rightOuterJoin(ys)    // joins the RDDs keeping the keys that are in ys (k, (Optional[vx], vy))
+```
+
+## Common actions on pair RDDs
 ```
 val xs = RDD((k1, v1), (k2, v2), (k3, v3), ...)
-xs.groupByKey       // Group the values for each key in the RDD into a single sequence
-xs reduceByKey f    // Merge the values for each key using an associative and commutative reduce function
-xs mapValues f      // Pass each value in the key-value pair RDD through a map function without changing the keys
+xs.countbyKey   // counts the number of elements per key in a pair RDD
 ```
